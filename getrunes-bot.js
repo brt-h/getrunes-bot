@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const config = require("./config.json");
 
-// var timerVar = setInterval(countTimer, 1000);
 function timerVar() { setInterval(countTimer, 1000); }
 var totalSeconds = 0;
 var hour = 0;
@@ -14,7 +14,7 @@ function countTimer() {
    seconds = totalSeconds - (hour*3600 + minute*60);
     }
 
-client.login('NTEwMTY5ODE2NjkxMjQ1MDg2.DtPLCg.cEjMiYxbXOZMSN8XvwSYw4pHAjE');
+client.login(config.token);
 
 client.on('message', message => {
   // Voice only works in guilds, if the message does not come from a guild,
@@ -60,4 +60,10 @@ client.on('message', message => {
       message.reply('You need to use /start first!');
     }
   }
+  //TODO
+  // if ((totalSeconds % 10) === 0) { //should be divided by 300 for 5 min interval
+  //   (connection => { // Connection is an instance of VoiceConnection
+  //     connection.playArbitraryInput('gorgc_pesant_work.mp3');
+  //     })
+  //   }
 });
