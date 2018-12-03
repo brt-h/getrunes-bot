@@ -1,12 +1,27 @@
+//TODO store the channel id from channel a user types /start in and then connect to the channel with somthing like:
+// client.setInterval(
+//   if (((totalSeconds % 10) === 0) && totalSeconds > 1) {
+//       currentchan.join()
+//         .then(connection => { // Connection is an instance of VoiceConnection
+//           message.reply('Get runes! ' + hour + ":" + minute + ":" + seconds);
+//           connection.playArbitraryInput('gorgc_pesant_work.mp3');
+//           console.log(totalSeconds);
+//           })
+//     }
+//   }
+// }
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
 
-function timerVar() { setInterval(countTimer, 1000); }
 var totalSeconds = 0;
 var hour = 0;
 var minute = 0;
 var seconds = 0;
+var currentchan; // last channel in which a user typed /start
+
+function timerVar() { setInterval(countTimer, 1000); }
 function countTimer() {
    ++totalSeconds;
    hour = Math.floor(totalSeconds /3600);
@@ -18,7 +33,7 @@ client.login(config.token);
 
 client.on('message', message => {
   // Voice only works in guilds, if the message does not come from a guild,
-  // we ignore it
+  // we ignore itmessage.member.voiceChannel;
   if (!message.guild) return;
 
   // if (message.content === '/join') {
@@ -42,8 +57,8 @@ client.on('message', message => {
           message.reply('I have successfully connected to the channel and started the timer! ' + hour + ":" + minute + ":" + seconds);
           connection.playArbitraryInput('gorgc_pesant_work.mp3');
           timerVar();
+          currentchan = message.member.voiceChannel;
           })
-        .catch(console.log);
     } else {
       message.reply('You need to join a voice channel first!');
     }
@@ -60,10 +75,17 @@ client.on('message', message => {
       message.reply('You need to use /start first!');
     }
   }
-  //TODO
-  // if ((totalSeconds % 10) === 0) { //should be divided by 300 for 5 min interval
-  //   (connection => { // Connection is an instance of VoiceConnection
-  //     connection.playArbitraryInput('gorgc_pesant_work.mp3');
-  //     })
+  // console.log(totalSeconds)
+  console.log(currentchan)
+
+  // if (((totalSeconds % 10) === 0) && totalSeconds > 1) {
+  //   if (message.member.voiceChannel) {
+  //     message.member.voiceChannel.join()
+  //       .then(connection => { // Connection is an instance of VoiceConnection
+  //         message.reply('Get runes! ' + hour + ":" + minute + ":" + seconds);
+  //         connection.playArbitraryInput('gorgc_pesant_work.mp3');
+  //         console.log(totalSeconds);
+  //         })
   //   }
+  // }
 });
