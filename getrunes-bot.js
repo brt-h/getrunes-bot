@@ -1,16 +1,3 @@
-//TODO store the channel id from channel a user types /start in and then connect to the channel with somthing like:
-// client.setInterval(
-//   if (((totalSeconds % 10) === 0) && totalSeconds > 1) {
-//       currentchan.join()
-//         .then(connection => { // Connection is an instance of VoiceConnection
-//           message.reply('Get runes! ' + hour + ":" + minute + ":" + seconds);
-//           connection.playArbitraryInput('gorgc_pesant_work.mp3');
-//           console.log(totalSeconds);
-//           })
-//     }
-//   }
-// }
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
@@ -28,6 +15,18 @@ function countTimer() {
    minute = Math.floor((totalSeconds - hour*3600)/60);
    seconds = totalSeconds - (hour*3600 + minute*60);
     }
+
+function alertRunes(currentchan) {
+  if (((totalSeconds % 10) === 0) && totalSeconds > 1) {
+    currentchan.join() //TODO fix this part
+        .then(connection => { // Connection is an instance of VoiceConnection
+          message.reply('Get runes! ' + hour + ":" + minute + ":" + seconds);
+          connection.playArbitraryInput('gorgc_pesant_work.mp3');
+          console.log(totalSeconds);
+          // console.log(currentchan)
+          })
+    }
+}
 
 client.login(config.token);
 
@@ -75,17 +74,6 @@ client.on('message', message => {
       message.reply('You need to use /start first!');
     }
   }
-  // console.log(totalSeconds)
-  console.log(currentchan)
-
-  // if (((totalSeconds % 10) === 0) && totalSeconds > 1) {
-  //   if (message.member.voiceChannel) {
-  //     message.member.voiceChannel.join()
-  //       .then(connection => { // Connection is an instance of VoiceConnection
-  //         message.reply('Get runes! ' + hour + ":" + minute + ":" + seconds);
-  //         connection.playArbitraryInput('gorgc_pesant_work.mp3');
-  //         console.log(totalSeconds);
-  //         })
-  //   }
-  // }
 });
+
+client.setInterval(alertRunes,1000,currentchan);
