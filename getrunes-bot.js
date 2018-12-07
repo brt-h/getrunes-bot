@@ -56,7 +56,7 @@ client.on('message', message => {
           message.reply('I have successfully connected to the channel and started the timer! ' + hour + ":" + minute + ":" + seconds);
           connection.playArbitraryInput('gorgc_pesant_work.mp3');
           timerVar();
-          //currentchan = message.member.voiceChannel;
+          currentchan = message.member.voiceChannel;
           client.setInterval(alertRunes,1000,currentchan);
           })
     } else {
